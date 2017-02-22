@@ -407,9 +407,8 @@ namespace syt_dl {
 
         //Updates syt-dl only
         public static void sytdlUpdate() {
-            string text = Calls.getText("http://ayyn.us/memes/version.txt");
-            string[] vars = text.Split('|');
-            if(vars[0] != version) {
+            string text = Calls.getText("https://github.com/spotdemo4/sytdl/raw/master/syt-dl/bin/Debug/version.txt");
+            if(text != version) {
 
                 //Downloads the new version of syt-dl
                 WebClient downloader = new WebClient();
