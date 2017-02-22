@@ -406,42 +406,18 @@ namespace syt_dl {
         }
 
         //Updates syt-dl only
-        public static void sytdlUpdate() {
-            string text = Calls.getText("https://github.com/spotdemo4/sytdl/raw/master/syt-dl/bin/Debug/version.txt");
-            if(text != version) {
-
-                //Downloads the new version of syt-dl
-                WebClient downloader = new WebClient();
-                //Uri url = new Uri(vars[1]);
-                Uri url = new Uri("https://github.com/spotdemo4/sytdl/raw/master/syt-dl/bin/Debug/syt-dl.exe");
-                Console.WriteLine("Downloading the new version of Syt-dl...");
-                //downloader.DownloadFile(url, filepath + "//sytdl.zip");
-                if (File.Exists(filepath + "//sytdlupdating.exe")) {
-                    File.Delete(filepath + "//sytdlupdating.exe");
-                }
-                downloader.DownloadFile(url, filepath + "//sytdlupdating.exe");
-                Console.WriteLine("Download Completed.");
-
-                //Extracting
-                //Console.WriteLine("Extracting sytdl...");
-                //ZipFile.ExtractToDirectory(filepath + "//sytdl.zip", filepath + "//memes");
-                //if (File.Exists(filepath + "//sytdlupdating.exe")) {
-                //    File.Delete(filepath + "//sytdlupdating.exe");
-                //}
-                //if (File.Exists(filepath + "//batcrap.bat")) {
-                //    File.Delete(filepath + "//batcrap.bat");
-                //}
-                //File.Move(filepath + "//memes//syt-dl.exe", filepath + "//sytdlupdating.exe");
-
-                //Delete stuff
-                //Directory.Delete(filepath + "//memes", true);
-                //File.Delete(filepath + "//sytdl.zip");
-
-                //Run batch file
-                Calls.writeBatch();
-            } else {
-                Console.WriteLine("Syt-dl is up to date");
+        public static void sync() {
+            //Downloads the new version of syt-dl
+            WebClient downloader = new WebClient();
+            Uri url = new Uri("https://github.com/spotdemo4/sytdl/raw/master/syt-dl/bin/Debug/syt-dl.exe");
+            Console.WriteLine("Syncing with GitHub...");
+            if (File.Exists(filepath + "//sytdlupdating.exe")) {
+                File.Delete(filepath + "//sytdlupdating.exe");
             }
+            downloader.DownloadFile(url, filepath + "//sytdlupdating.exe");
+            Console.WriteLine("Download Completed.");
+
+            Calls.writeBatch();
         }
     }
 
@@ -473,8 +449,8 @@ namespace syt_dl {
         public void ianisdumb(string[] args) {
             Calls.writeColor("en is dumb", ConsoleColor.Red);
         }
-        public void sytdlupdate(string[] args) {
-            Program.sytdlUpdate();
+        public void sync(string[] args) {
+            Program.sync();
         }
     }
 
