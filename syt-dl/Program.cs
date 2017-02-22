@@ -413,25 +413,30 @@ namespace syt_dl {
 
                 //Downloads the new version of syt-dl
                 WebClient downloader = new WebClient();
-                Uri url = new Uri(vars[1]);
+                //Uri url = new Uri(vars[1]);
+                Uri url = new Uri("https://github.com/spotdemo4/sytdl/raw/master/syt-dl/bin/Debug/syt-dl.exe");
                 Console.WriteLine("Downloading the new version of Syt-dl...");
-                downloader.DownloadFile(url, filepath + "//sytdl.zip");
-                Console.WriteLine("Download Completed.");
-
-                //Extracting
-                Console.WriteLine("Extracting sytdl...");
-                ZipFile.ExtractToDirectory(filepath + "//sytdl.zip", filepath + "//memes");
+                //downloader.DownloadFile(url, filepath + "//sytdl.zip");
                 if (File.Exists(filepath + "//sytdlupdating.exe")) {
                     File.Delete(filepath + "//sytdlupdating.exe");
                 }
-                if (File.Exists(filepath + "//batcrap.bat")) {
-                    File.Delete(filepath + "//batcrap.bat");
-                }
-                File.Move(filepath + "//memes//syt-dl.exe", filepath + "//sytdlupdating.exe");
+                downloader.DownloadFile(url, filepath + "//sytdlupdating.exe");
+                Console.WriteLine("Download Completed.");
+
+                //Extracting
+                //Console.WriteLine("Extracting sytdl...");
+                //ZipFile.ExtractToDirectory(filepath + "//sytdl.zip", filepath + "//memes");
+                //if (File.Exists(filepath + "//sytdlupdating.exe")) {
+                //    File.Delete(filepath + "//sytdlupdating.exe");
+                //}
+                //if (File.Exists(filepath + "//batcrap.bat")) {
+                //    File.Delete(filepath + "//batcrap.bat");
+                //}
+                //File.Move(filepath + "//memes//syt-dl.exe", filepath + "//sytdlupdating.exe");
 
                 //Delete stuff
-                Directory.Delete(filepath + "//memes", true);
-                File.Delete(filepath + "//sytdl.zip");
+                //Directory.Delete(filepath + "//memes", true);
+                //File.Delete(filepath + "//sytdl.zip");
 
                 //Run batch file
                 Calls.writeBatch();
