@@ -405,7 +405,7 @@ namespace syt_dl {
             }
         }
 
-        //Updates syt-dl only
+        //Sync's syt-dl with GitHub
         public static void sync() {
             //Downloads the new version of syt-dl
             WebClient downloader = new WebClient();
