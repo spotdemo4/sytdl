@@ -36,7 +36,7 @@ namespace syt_dl {
 
         private void gui_Load(object sender, EventArgs e) {
             //Console.WriteLine(Calls.isMinimized("Syt-dl"));
-            MessageBox.Show("github");
+            //MessageBox.Show("github");
             if (Directory.Exists(filepath) == false) {
                 this.Hide();
                 setting.Hide();
