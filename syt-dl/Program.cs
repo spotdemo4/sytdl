@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 namespace syt_dl {
     class Program {
         //Define variables
-        public static string version = "420.73";
+        public static string version = "420.74";
         public static string filepath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\sytdl";
         public static string currentdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public static bool suppression = true;
