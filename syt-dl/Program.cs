@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 namespace syt_dl {
     class Program {
         //Define variables
-        public static string version = "420.74";
+        public static string version = "420.76";
         public static string filepath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\sytdl";
         public static string currentdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public static bool suppression = true;
@@ -177,8 +177,10 @@ namespace syt_dl {
             }
             string audname = "aud" + rand;
 
-            //Tests if it's a webm
+            //Gets video data
             string videoinfo = sendCommandOutput("ffprobe", "-i \"" + filepath + "\\" + vidname + "\" -hide_banner", true);
+            Calls.duration = Convert.ToInt32(sendCommandOutput("ffprobe", "-v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 -sexagesimal \"" + filepath + "\\" + vidname + "\"", false).Split('.')[0].Replace(":", ""));
+            Calls.size = Convert.ToString(Math.Round(((Convert.ToDouble(sendCommandOutput("ffprobe", "-v error -show_entries format=size -of default=noprint_wrappers=1:nokey=1 \"" + filepath + "\\" + vidname + "\"", false)) / 1024f) / 1024f), 1)) + "MiB";
 
             //Merges or converts the audio and video
             Console.WriteLine("");
@@ -417,7 +419,18 @@ namespace syt_dl {
             downloader.DownloadFile(url, filepath + "//sytdlupdating.exe");
             Console.WriteLine("Download Completed.");
 
-            Calls.writeBatch();
+            //Writes a batch file
+            string currentdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string[] lines = { "@echo off",
+                "PING 1.1.1.1 -n 1 -w 5000 >NUL",
+                "del /f /q \"" + System.AppDomain.CurrentDomain.FriendlyName + "\"",
+                "cd \"" + Program.filepath + "\"",
+                "ren sytdlupdating.exe \"" + AppDomain.CurrentDomain.FriendlyName + "\"",
+                "move /Y \"" + Program.filepath + "\\" + AppDomain.CurrentDomain.FriendlyName + "\" \"" + currentdir + "\""};
+            File.WriteAllLines(Program.filepath + "\\batcrap.bat", lines);
+            Process.Start(Program.filepath + "\\batcrap.bat");
+            Application.Exit();
+            Environment.Exit(1);
         }
     }
 
@@ -455,6 +468,10 @@ namespace syt_dl {
     }
 
     class Calls {
+        public static string size = "";
+        public static int duration = 0;
+        public static int length = 0;
+
         //Gets the video id given a url
         public static string getVideoID(string big) {
             if (big.Contains("youtu.be/")) {
@@ -535,7 +552,32 @@ namespace syt_dl {
                 string cat = output.Replace("[download] ", "");
                 Console.Write("\r" + cat);
             } else if (output.StartsWith("frame")) {
-                Console.Write("\r" + output);
+                if (output.Contains("time")) {
+                    //TIME
+                    int time = Convert.ToInt32(output.Substring(output.IndexOf("time=") + "time=".Length).Split('.')[0].Replace(":", ""));
+                    string ctime = " " + Convert.ToString(Math.Round((((double)time / (double)duration) * 100), 1)) + "%";
+
+                    //BITRATE
+                    string bitr8 = output.Substring(output.IndexOf("bitrate=") + "bitrate=".Length).Split('/')[0];
+                    bitr8 = bitr8 + "/s";
+
+                    //WRITE TO OUTPUT
+                    if (ctime.Contains("100%")) {
+                        //IF ITS COMPLETE
+                        string complete = "\r100% of " + size + " in 00:00";
+                        int completelength = complete.Length;
+                        for (int i = 0; i < length - completelength; i++) {
+                            complete = complete + " ";
+                        }
+                        Console.Write(complete);
+                    } else {
+                        //IF ITS NOT
+                        Console.Write("\r" + ctime + " of " + size + " at " + bitr8 + "  ");
+                        if(("\r" + ctime + " of " + size + " at " + bitr8 + "  ").Length > length) {
+                            length = ("\r" + ctime + " of " + size + " at " + bitr8 + "  ").Length;
+                        }
+                    }
+                }
             } else if (output.StartsWith("size")) {
                 Console.Write("\r" + output);
             } else if (Program.suppression == false) {
@@ -590,21 +632,6 @@ namespace syt_dl {
                 var strContent = reader.ReadToEnd();
                 return strContent;
             }
-        }
-
-        //Writes a batch file to delete stydl and run it again
-        public static void writeBatch() {
-            string currentdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string[] lines = { "@echo off",
-                "PING 1.1.1.1 -n 1 -w 5000 >NUL",
-                "del /f /q \"" + System.AppDomain.CurrentDomain.FriendlyName + "\"",
-                "cd \"" + Program.filepath + "\"",
-                "ren sytdlupdating.exe \"" + AppDomain.CurrentDomain.FriendlyName + "\"",
-                "move /Y \"" + Program.filepath + "\\" + AppDomain.CurrentDomain.FriendlyName + "\" \"" + currentdir + "\""};
-            File.WriteAllLines(Program.filepath + "\\batcrap.bat", lines);
-            Process.Start(Program.filepath + "\\batcrap.bat");
-            Application.Exit();
-            Environment.Exit(1);
         }
     }
 }
