@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 namespace syt_dl {
     class Program {
         //Define variables
-        public static string version = "420.76";
+        public static string version = "420.77";
         public static string filepath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\sytdl";
         public static string currentdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public static bool suppression = true;
@@ -162,7 +162,6 @@ namespace syt_dl {
             //Check and see if the video exists before downloading anything else
             if (!File.Exists(filepath + "\\" + vidname)) {
                 Calls.writeColor("ERROR: YouTube-DL Couldn't Find The Video.", ConsoleColor.Red);
-                Console.WriteLine("");
                 return;
             }
 
@@ -223,7 +222,6 @@ namespace syt_dl {
             //Check and see if the video exists before downloading anything else
             if (!File.Exists(filepath + "\\" + audname)) {
                 Calls.writeColor("ERROR: YouTube-DL Couldn't Find The Video.", ConsoleColor.Red);
-                Console.WriteLine("");
                 return;
             }
 
