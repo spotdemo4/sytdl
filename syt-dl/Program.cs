@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 namespace syt_dl {
     class Program {
         //Define variables
-        public static string version = "420.77";
+        public static string version = "420.78";
         public static string filepath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\sytdl";
         public static string currentdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public static bool suppression = true;
@@ -454,7 +454,7 @@ namespace syt_dl {
         }
         public void flags(string[] args) {
             Calls.writeColor("FLAGS: ", ConsoleColor.DarkYellow);
-            Console.WriteLine("-s: Un-suppresses data (For bug testing)");
+            Console.WriteLine("-i: Un-suppresses data (For bug testing)");
             Console.WriteLine("-f [FORMAT]: Selects the output format for the video (Default mp4)");
         }
         public void ianisdumb(string[] args) {
