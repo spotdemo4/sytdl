@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 namespace syt_dl {
     class Program {
         //Define variables
-        public static string version = "420.78";
+        public static string version = "420.79";
         public static string filepath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\sytdl";
         public static string currentdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public static bool suppression = true;
@@ -186,10 +186,10 @@ namespace syt_dl {
             try {
                 if (videoinfo.Contains("Video: vp9")) {
                     Calls.writeColor("Converting to ." + format + "...", ConsoleColor.Cyan);
-                    sendCommand("ffmpeg", "-y -i \"" + filepath + "\\" + vidname + "\" -i \"" + filepath + "\\" + audname + "\" -c:v libx264 -c:a aac -strict experimental " + Calls.getVideoID(url) + "." + format);
+                    sendCommand("ffmpeg", "-y -i \"" + filepath + "\\" + vidname + "\" -i \"" + filepath + "\\" + audname + "\" -c:v libx264 -c:a aac -strict experimental \"" + currentdir + "\\" + Calls.getVideoID(url) + "." + format + "\"");
                 } else {
                     Calls.writeColor("Merging to ." + format + "...", ConsoleColor.Cyan);
-                    sendCommand("ffmpeg", "-y -i \"" + filepath + "\\" + vidname + "\" -i \"" + filepath + "\\" + audname + "\" -c:v copy -c:a aac -strict experimental " + Calls.getVideoID(url) + "." + format);
+                    sendCommand("ffmpeg", "-y -i \"" + filepath + "\\" + vidname + "\" -i \"" + filepath + "\\" + audname + "\" -c:v copy -c:a aac -strict experimental \"" + currentdir + "\\" + Calls.getVideoID(url) + "." + format + "\"");
                 }
             } catch (Exception ex) {
                 Console.WriteLine("Error with ffmpeg: " + ex.ToString());
@@ -229,7 +229,7 @@ namespace syt_dl {
             Console.WriteLine("");
             try {
                 Calls.writeColor("Converting to ." + format + "...", ConsoleColor.Cyan);
-                sendCommand("ffmpeg", "-y -i \"" + filepath + "\\aud" + rand + "\" -acodec libmp3lame -aq 4 " + Calls.getVideoID(url) + "." + format);
+                sendCommand("ffmpeg", "-y -i \"" + filepath + "\\aud" + rand + "\" -acodec libmp3lame -aq 4 \"" + currentdir + "\\" + Calls.getVideoID(url) + "." + format + "\"");
             } catch (Exception ex) {
                 Console.WriteLine("Error with ffmpeg: " + ex.ToString());
                 return;
@@ -462,6 +462,9 @@ namespace syt_dl {
         }
         public void sync(string[] args) {
             Program.sync();
+        }
+        public void currentdir(string[] args) {
+            Console.WriteLine(Program.currentdir);
         }
     }
 
