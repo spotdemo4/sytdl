@@ -463,8 +463,9 @@ namespace syt_dl {
         public void sync(string[] args) {
             Program.sync();
         }
-        public void currentdir(string[] args) {
+        public void data(string[] args) {
             Console.WriteLine(Program.currentdir);
+            Console.WriteLine(Program.filepath);
         }
     }
 
