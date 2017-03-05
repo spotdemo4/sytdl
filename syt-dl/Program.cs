@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 namespace syt_dl {
     class Program {
         //Define variables
-        public static string version = "420.79";
+        public static string version = "420.80";
         public static string filepath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\sytdl";
         public static string currentdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public static bool suppression = true;
@@ -107,6 +107,12 @@ namespace syt_dl {
 
         //Downloads the url
         public static void download(string url, string[] args) {
+            //Checks if system account
+            if (filepath.Contains("system32")) {
+                filepath = currentdir;
+                Console.WriteLine("This is a system account :(");
+            }
+
             //Define variables
             string audformats = Calls.getText("http://pastebin.com/raw/FANfg0JD");
             string format = "mp4";
