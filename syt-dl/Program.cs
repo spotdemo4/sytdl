@@ -59,6 +59,8 @@ namespace syt_dl {
             //Define variables
             string format = "mp4";
             suppression = true;
+
+            //Gets the name of the file
             string name;
             if (filename.Contains('\\')) {
                 string[] namee = filename.Split('\\');
@@ -111,6 +113,10 @@ namespace syt_dl {
             if (filepath.Contains("system32")) {
                 filepath = currentdir;
                 Console.WriteLine("This is a system account :(");
+                if(Calls.getVideoLength(url) > 1200) {
+                    Console.WriteLine("ERROR: Video too long.");
+                    return;
+                }
             }
 
             //Define variables
@@ -473,6 +479,10 @@ namespace syt_dl {
             Console.WriteLine(Program.currentdir);
             Console.WriteLine(Program.filepath);
         }
+        public void videolength(string[] args) {
+            //Console.WriteLine("what" + args[1]);
+            Console.WriteLine(Calls.getVideoLength(args[2]));
+        }
     }
 
     class Calls {
@@ -640,6 +650,18 @@ namespace syt_dl {
                 var strContent = reader.ReadToEnd();
                 return strContent;
             }
+        }
+
+        //Gets video length in seconds
+        public static int getVideoLength(string url) {
+            string vp = Program.sendCommandOutput("youtube-dl", "--get-duration " + url, false);
+            if(vp.Count(x => x == ':') > 1) {
+                return 3600;
+            }
+            string[] split = vp.Split(':');
+            int seconds = Int32.Parse(split[1]);
+            seconds = seconds + Int32.Parse(split[0]) * 60;
+            return seconds;
         }
     }
 }
