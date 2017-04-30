@@ -657,6 +657,8 @@ namespace syt_dl {
             string vp = Program.sendCommandOutput("youtube-dl", "--get-duration " + url, false);
             if(vp.Count(x => x == ':') > 1) {
                 return 3600;
+            } else if (!vp.Contains(':')) {
+                return 60;
             }
             string[] split = vp.Split(':');
             int seconds = Int32.Parse(split[1]);
