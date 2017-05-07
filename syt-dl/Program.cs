@@ -34,9 +34,15 @@ namespace syt_dl {
             if (arguments.Length < 2) {
                 Console.WriteLine("Syt-dl version " + version);
                 gui.ShowDialog();
-            
-            //If there is a command being called
-            } else if (commands.Contains(arguments[1].Replace("--", "")) && arguments[1].Contains("--")) {
+                return;
+            }
+
+            //If Directory doesn't exist, update
+            if (!Directory.Exists(filepath)) {
+                update();
+
+            //If it's a command
+            } if (commands.Contains(arguments[1].Replace("--", "")) && arguments[1].Contains("--")) {
                 Calls.callMethod(arguments[1].Replace("--", ""), arguments);
             
             //If it's a URL
@@ -446,7 +452,7 @@ namespace syt_dl {
 
     //Make new commands here
     class Commands {
-        public static string filepath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\sytdl";
+        public static string filepath = Program.filepath;
 
         public static void echo(string[] args) {
             Console.WriteLine(string.Join(" ", args));
